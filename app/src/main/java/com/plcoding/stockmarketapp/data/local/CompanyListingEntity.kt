@@ -8,6 +8,6 @@ data class CompanyListingEntity(
     val name: String,
     val symbol: String,
     val exchange: String,
-    val assetType: String,
+   // val assetType: String,
     @PrimaryKey val id: Int? = null
 )

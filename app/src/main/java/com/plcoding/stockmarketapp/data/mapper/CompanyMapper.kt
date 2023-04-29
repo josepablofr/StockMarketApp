@@ -9,8 +9,8 @@ fun CompanyListingEntity.toCompanyListing(): CompanyListing {
     return CompanyListing(
         name = name,
         symbol = symbol,
-        exchange = exchange,
-        assetType = assetType
+        exchange = exchange
+        // assetType = assetType
     )
 }
 
@@ -18,8 +18,8 @@ fun CompanyListing.toCompanyListingEntity(): CompanyListingEntity {
     return CompanyListingEntity(
         name = name,
         symbol = symbol,
-        exchange = exchange,
-        assetType = assetType
+        exchange = exchange
+        //assetType = assetType
     )
 }
 

@@ -22,12 +22,12 @@ class CompanyListingsParser @Inject constructor(): CSVParser<CompanyListing> {
                     val symbol = line.getOrNull(0)
                     val name = line.getOrNull(1)
                     val exchange = line.getOrNull(2)
-                    val assetType = line.getOrNull(3)
+                    // val assetType = line.getOrNull(3)
                     CompanyListing(
                         name = name ?: return@mapNotNull null,
                         symbol = symbol ?: return@mapNotNull null,
                         exchange = exchange ?: return@mapNotNull null,
-                        assetType = assetType ?: return@mapNotNull null
+                        // assetType = assetType ?: return@mapNotNull null
                     )
                 }
                 .also {

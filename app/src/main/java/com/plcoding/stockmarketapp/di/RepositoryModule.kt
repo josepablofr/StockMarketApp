@@ -25,7 +25,7 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindIntradayParser(
+    abstract fun bindIntradayInfoParser(
         intradayInfoParser: IntradayInfoParser
     ): CSVParser<IntradayInfo>
 

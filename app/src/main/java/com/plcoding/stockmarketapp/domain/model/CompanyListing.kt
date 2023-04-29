@@ -4,5 +4,5 @@ data class CompanyListing(
     val name: String,
     val symbol: String,
     val exchange: String,
-    val assetType: String,
+    //val assetType: String,
 )

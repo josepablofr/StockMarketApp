@@ -46,14 +46,14 @@ fun StockChart(
             drawContext.canvas.nativeCanvas.apply {
                     drawText(
                         hour.toString(),
-                        spacing * 1 * spacePerHour,
+                        spacing + i * spacePerHour,
                         size.height - 5,
                         textPaint
                     )
                 }
             }
             val priceStep = (upperValue - lowerValue) / 5f
-            (0..5).forEach { i ->
+            (0..4).forEach { i ->
             drawContext.canvas.nativeCanvas.apply {
                 drawText(
                     round(lowerValue + priceStep * i).toString(),
@@ -63,19 +63,52 @@ fun StockChart(
                 )
             }
         }
+        var lastX = 0f
         val strokePath = Path().apply {
             val height = size.height
             for (i in infos.indices) {
                 val info = infos[i]
                 val nextInfo = infos.getOrNull(i+1) ?: infos.last()
-                val leftRatio = (nextInfo.close - lowerValue) / (upperValue - lowerValue)
+                val leftRatio = (info.close - lowerValue) / (upperValue - lowerValue)
+                val rightRatio = (nextInfo.close - lowerValue) / (upperValue - lowerValue)
+
+                val x1 = spacing + i * spacePerHour
+                val y1 = height - spacing - (leftRatio * height).toFloat()
+                val x2 = spacing + (i + 1) * spacePerHour
+                val y2 = height - spacing - (rightRatio * height).toFloat()
                 if(i == 0) {
-                    moveTo(
-                        spacing + i * spacePerHour,
-                        height - spacing - (leftRatio * height).toFloat()
-                    )
+                    moveTo(x1, y1)
                 }
+                lastX = (x1 + x2) / 2f
+                quadraticBezierTo(
+                    x1, y1, lastX,  (y1 + y2) / 2f
+                )
             }
         }
+        val fillPath = android.graphics.Path(strokePath.asAndroidPath())
+            .asComposePath()
+            .apply {
+                lineTo(lastX, size.height - spacing)
+                lineTo(spacing, size.height -spacing)
+                close()
+            }
+        drawPath(
+            path=fillPath,
+            brush = Brush.verticalGradient(
+                colors = listOf(
+                    transparentGraphColor,
+                    Color.Transparent
+                ),
+                endY = size.height - spacing
+            )
+        )
+        drawPath(
+            path = strokePath,
+            color = graphColor,
+            style = Stroke(
+                width = 3.dp.toPx(),
+                cap = StrokeCap.Round
+            )
+        )
     }
 }

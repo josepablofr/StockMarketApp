@@ -8,6 +8,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.create
@@ -31,9 +33,12 @@ object AppModule {
     @Singleton
     fun provideStockDatabase(app: Application): StockDatabase {
         return Room.databaseBuilder(
-        app,
-        StockDatabase::class.java,
+            app,
+            StockDatabase::class.java,
         "stockdb.db"
-        ).build()
+        )
+        .fallbackToDestructiveMigration()   // Esto lo agregó Iñigo, para "planchar" los datos con la nueva estructura y jalara
+                // no se recomienda hacerlo en Productivo
+        .build()
     }
 }
